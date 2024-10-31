@@ -12,15 +12,13 @@ package object Benchmark {
     timeA1
   }
 
-  def tiemposKmedianas(puntos:Seq[Punto], k:Int, eta:Double) = {
-
+  def tiemposKmedianas(puntos: Seq[Punto], k: Int, eta: Double) = {
     val medianas = inicializarMedianas(k, puntos)
     val tiempoSeq = tiempoDe(kMedianasSeq(puntos, medianas, eta))
     val tiempoPar = tiempoDe(kMedianasPar(puntos, medianas, eta))
-    (tiempoSeq,tiempoPar, tiempoSeq.value / tiempoPar.value)
+    (tiempoSeq, tiempoPar, tiempoSeq.value / tiempoPar.value)
   }
-
-  def probarKmedianas(puntos:Seq[Punto], k:Int, eta:Double) = {
+  def probarKmedianasSeq(puntos:Seq[Punto], k:Int, eta:Double) = {
     // Probar lo secuencial
     val puntosSeq = puntos
     val medianasSeq = inicializarMedianas(k, puntosSeq)
@@ -74,12 +72,13 @@ package object Benchmark {
 
 
     Plotly.plot("kmedianasSeq.html", dataSeq, layoutSeq)
-
+  }
+  def probarKmedianasPar(puntos:Seq[Punto], k:Int, eta:Double) = {
     // Probar lo paralelo
     val puntosPar = puntos
-    val medianasPar = medianasSeq
+    val medianasPar = inicializarMedianas(k, puntosPar)
     val medianasParfin = kMedianasPar(puntosPar, medianasPar, eta)
-    val clasifFinalPar = clasificarPar(umbral(puntosPar.length))(puntosPar, medianasParfin)
+    val clasifFinalPar = clasificarPar(umbral(puntosPar.length))(puntosPar,medianasParfin)
     val tiempoPar = tiempoDe(kMedianasPar(puntosPar, medianasPar, eta))
 
     // Hacer gráfica de los resultados del proceso paralelo
@@ -128,9 +127,5 @@ package object Benchmark {
 
 
     Plotly.plot("kmedianasPar.html", dataPar.toSeq, layoutPar)
-    (tiempoSeq, tiempoPar, tiempoSeq.value/tiempoPar.value)
   }
 }
-
-//  (medianasSeq, medianasSeqfin, clasifFinalSeq, tiempoSeq, tiempoSeq.value)
-//  (medianasPar, medianasParfin, clasifFinalPar, tiempoPar, tiempoPar.value)
