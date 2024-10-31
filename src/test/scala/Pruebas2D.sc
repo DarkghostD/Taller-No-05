@@ -3,9 +3,7 @@ import kmedianas2D._
 
 // Generando 4096 puntos para encontrar 64 clusters
 val puntos4096_64 = generarPuntos(64, 4096).toSeq
-// Midiendo tiempos
 tiemposKmedianas(puntos4096_64, 64, 0.01)
-// Visualizando Clusters
 probarKmedianas(puntos4096_64, 64, 0.01)
 
 // Generando 8192 puntos para encontrar 128 clusters

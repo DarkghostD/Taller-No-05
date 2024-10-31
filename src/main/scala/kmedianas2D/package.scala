@@ -41,7 +41,10 @@ package object kmedianas2D {
   def clasificarSeq(puntos: Seq[Punto], medianas: Seq[Punto]): Map[Punto, Seq[Punto]] = {
     puntos.groupBy(hallarPuntoMasCercano(_, medianas))
   }
-
+  def umbral(npuntos:Int):Int = {
+    // Si npuntos= 2^n, entonces el umbral será 2^(n/2)
+    math.pow(2, ((math.log(npuntos)/math.log(2))/2).toInt).toInt
+  }
   // Función de clasificación paralela
   def clasificarPar(umb: Int)(puntos: Seq[Punto], medianas: Seq[Punto]): Map[Punto, Seq[Punto]] = {
     if (puntos.size <= umb) clasificarSeq(puntos, medianas)
