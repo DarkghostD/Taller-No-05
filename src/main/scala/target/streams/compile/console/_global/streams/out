@@ -1,0 +1,43 @@
+[0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.12:1.10.3:compile for Scala 2.12.20[0m
+[0m[[0m[0minfo[0m] [0m[0mNon-compiled module 'compiler-bridge_2.12' for Scala 2.12.20. Compiling...[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreating plain compiler interface for 2.12.20.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > Arguments: [0m
+[0m[[0m[0mdebug[0m] [0m[0m	-d[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_57c48d22[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-nowarn[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\.sbt\boot\scala-2.12.20\lib\scala-library.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-classpath[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-sbt\compiler-interface\1.10.3\compiler-interface-1.10.3.jar;C:\Users\Usuario\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-sbt\util-interface\1.10.3\util-interface-1.10.3.jar;C:\Users\Usuario\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-sbt\compiler-bridge_2.12\1.10.3\compiler-bridge_2.12-1.10.3-sources.jar;C:\Users\Usuario\.sbt\boot\scala-2.12.20\lib\scala-compiler.jar;C:\Users\Usuario\.sbt\boot\scala-2.12.20\lib\scala-reflect.jar;C:\Users\Usuario\.sbt\boot\scala-2.12.20\lib\scala-xml_2.12-2.3.0.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\scala\ZincCompat.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\scala\reflect\ReflectAccess.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\API.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\AbstractZincFile.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\Analyzer.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\CallbackGlobal.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\ClassName.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\Compat.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\CompilerBridge.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\ConsoleBridge.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\DelegatingReporter.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\Dependency.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\ExtractAPI.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\ExtractUsedNames.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\GlobalHelpers.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\InteractiveConsoleBridge.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\InteractiveConsoleFactoryBridge.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\InteractiveConsoleHelper.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\InteractiveConsoleResponse.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\JarUtils.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\JavaUtils.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\LocalToNonLocalClass.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\LocateClassFile.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\Log.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\Message.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\PlainNioFile.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\ScaladocBridge.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Usuario\AppData\Local\Temp\sbt_20db6acd\xsbt\trace.scala[0m
+[0m[[0m[0mdebug[0m] [0m[0m      [0m
+[0m[[0m[0minfo[0m] [0m[0m  Compilation completed in 7.007s.[0m
+[0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.12:1.10.3:compile for Scala 2.12.20[0m
+[0m[[0m[0minfo[0m] [0m[0mStarting scala interpreter...[0m
