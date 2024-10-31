@@ -1,65 +1,136 @@
-package Benchmark
+package object Benchmark {
+  import kmedianas2D._
+  import org.scalameter._
+  import plotly._, element._, layout._
 
-import kmedianas2D._
-import scala.concurrent.duration._
-import plotly._
-import plotly.element._
-import plotly.layout._
-import plotly.Plotly
-
-object Benchmark {
-
-  // Función para medir el tiempo de ejecución y aceleración de ambas versiones
-  def tiemposKmedianas(puntos: Seq[Punto], k: Int, eta: Double): (Double, Double, Double) = {
-    val startSeq = System.nanoTime()
-    kMedianasSeq(puntos, inicializarMedianas(k, puntos), eta)
-    val endSeq = System.nanoTime()
-    val tiempoSecuencial = (endSeq - startSeq).nanos.toMillis
-
-    val startPar = System.nanoTime()
-    kMedianasPar(puntos, inicializarMedianas(k, puntos), eta)
-    val endPar = System.nanoTime()
-    val tiempoParalelo = (endPar - startPar).nanos.toMillis
-
-    val aceleracion = tiempoSecuencial.toDouble / tiempoParalelo.toDouble
-
-    (tiempoSecuencial, tiempoParalelo, aceleracion)
+  def tiempoDe[T](body: => T) = {
+    val timeA1 = config(
+      KeyValue(Key.exec.minWarmupRuns -> 20),
+      KeyValue(Key.exec.maxWarmupRuns -> 60),
+      KeyValue(Key.verbose -> false)
+    ) withWarmer(new Warmer.Default) measure (body)
+    timeA1
   }
 
-  // Función para probar k-means y generar gráficos de los resultados
-  def probarKmedianas(puntos: Seq[Punto], k: Int, eta: Double): (Double, Double, Double) = {
-    val (tiempoSeq, tiempoPar, aceleracion) = tiemposKmedianas(puntos, k, eta)
+  def tiemposKmedianas(puntos:Seq[Punto], k:Int, eta:Double) = {
 
-    // Ejecutar k-means en ambas versiones para obtener los clusters
-    val clustersSeq = kMedianasSeq(puntos, inicializarMedianas(k, puntos), eta)
-    val clustersPar = kMedianasPar(puntos, inicializarMedianas(k, puntos), eta)
-
-    // Crear gráficos para la versión secuencial
-    val secuencialFigura = createGraph(clustersSeq, "K-Medias Secuencial")
-    secuencialFigura.plot("secuencial.html")
-
-    // Crear gráficos para la versión paralela
-    val paraleloFigura = createGraph(clustersPar, "K-Medias Paralelo")
-    paraleloFigura.plot("paralelo.html")
-
-    (tiempoSeq, tiempoPar, aceleracion)
+    val medianas = inicializarMedianas(k, puntos)
+    val tiempoSeq = tiempoDe(kMedianasSeq(puntos, medianas, eta))
+    val tiempoPar = tiempoDe(kMedianasPar(puntos, medianas, eta))
+    (tiempoSeq,tiempoPar, tiempoSeq.value / tiempoPar.value)
   }
 
-  // Función auxiliar para crear gráficos de clusters con Plotly
-  private def createGraph(clusters: Seq[Punto], titulo: String): Figure = {
-    val puntosX = clusters.map(_.x)
-    val puntosY = clusters.map(_.y)
+  def probarKmedianas(puntos:Seq[Punto], k:Int, eta:Double) = {
+    // Probar lo secuencial
+    val puntosSeq = puntos
+    val medianasSeq = inicializarMedianas(k, puntosSeq)
+    val medianasSeqfin = kMedianasSeq(puntosSeq, medianasSeq, eta)
+    val clasifFinalSeq = clasificarSeq(puntosSeq,medianasSeqfin)
+    val tiempoSeq = tiempoDe(kMedianasSeq(puntosSeq, medianasSeq, eta))
 
-    val scatter = Scatter(
-      x = puntosX,
-      y = puntosY,
-      mode = ScatterMode(ScatterMode.Markers),
-      marker = Marker(color = Color.RGBA(255, 0, 0, 0.8))
-    )
+    // Hacer gráfica de los resultados del proceso secuencial
+    val trazosSeq = for {
+      (p,pseq) <- clasifFinalSeq
+      ejeXseq = for {
+        pto <- pseq
+      } yield pto.x
+      ejeYseq = for {
+        pto <- pseq
+      } yield pto.y
+    } yield Scatter(
+      ejeXseq,
+      ejeYseq
+    ).withMode(ScatterMode(ScatterMode.Markers)).withName(s"Puntos: $p.x" ++ s"$p.y")
 
-    Figure(
-      data = Seq(scatter),
-      layout = Layout(title = titulo)
-    )
+    val ejeXMedianasSeq = for {
+      p <- medianasSeq
+    } yield p.x
+
+    val ejeYMedianasSeq = for {
+      p <- medianasSeq
+    } yield p.y
+
+    val ejeXMedianasFinSeq = for {
+      p <- medianasSeqfin
+    } yield p.x
+
+    val ejeYMedianasFinSeq = for {
+      p <- medianasSeqfin
+    } yield p.y
+
+    val trazo2Seq= Scatter(
+      ejeXMedianasSeq,
+      ejeYMedianasSeq
+    ).withMode(ScatterMode(ScatterMode.Markers)).withName("Medianas")
+
+    val trazo3Seq= Scatter(
+      ejeXMedianasFinSeq,
+      ejeYMedianasFinSeq
+    ).withMode(ScatterMode(ScatterMode.Markers)).withName("Medianas Finales")
+
+    val dataSeq = trazo2Seq +:  (trazo3Seq +: trazosSeq.toSeq)
+
+    val layoutSeq = Layout().withTitle("Plotting de puntos al azar y medianas iniciales y finales - Versión Secuencial")
+
+
+    Plotly.plot("kmedianasSeq.html", dataSeq, layoutSeq)
+
+    // Probar lo paralelo
+    val puntosPar = puntos
+    val medianasPar = medianasSeq
+    val medianasParfin = kMedianasPar(puntosPar, medianasPar, eta)
+    val clasifFinalPar = clasificarPar(umbral(puntosPar.length))(puntosPar,medianasParfin)
+    val tiempoPar = tiempoDe(kMedianasPar(puntosPar, medianasPar, eta))
+
+    // Hacer gráfica de los resultados del proceso paralelo
+    val trazosPar = for {
+      (p,ppar) <- clasifFinalPar
+      ejeXpar = for {
+        pto <- ppar
+      } yield pto.x
+      ejeYpar = for {
+        pto <- ppar
+      } yield pto.y
+    } yield Scatter(
+      ejeXpar.toSeq,
+      ejeYpar.toSeq
+    ).withMode(ScatterMode(ScatterMode.Markers)).withName(s"Puntos: $p.x" ++ s"$p.y")
+
+    val ejeXMedianasPar = for {
+      p <- medianasPar
+    } yield p.x
+
+    val ejeYMedianasPar = for {
+      p <- medianasPar
+    } yield p.y
+
+    val ejeXMedianasFinPar = for {
+      p <- medianasParfin
+    } yield p.x
+
+    val ejeYMedianasFinPar = for {
+      p <- medianasParfin
+    } yield p.y
+
+    val trazo2Par= Scatter(
+      ejeXMedianasPar,
+      ejeYMedianasPar
+    ).withMode(ScatterMode(ScatterMode.Markers)).withName("Medianas")
+
+    val trazo3Par= Scatter(
+      ejeXMedianasFinPar,
+      ejeYMedianasFinPar
+    ).withMode(ScatterMode(ScatterMode.Markers)).withName("Medianas Finales")
+
+    val dataPar = (trazo2Par +:  (trazo3Par +: trazosPar.toSeq))
+
+    val layoutPar = Layout().withTitle("Plotting de puntos al azar y medianas iniciales y finales - Versión Paralela")
+
+
+    Plotly.plot("kmedianasPar.html", dataPar.toSeq, layoutPar)
+    (tiempoSeq, tiempoPar, tiempoSeq.value/tiempoPar.value)
   }
 }
+
+//  (medianasSeq, medianasSeqfin, clasifFinalSeq, tiempoSeq, tiempoSeq.value)
+//  (medianasPar, medianasParfin, clasifFinalPar, tiempoPar, tiempoPar.value)
